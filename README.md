@@ -1,2 +1,2 @@
 # SDL
-记录学习SDL的代码
+记录Clion学习SDL的代码

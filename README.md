@@ -1,2 +1,4 @@
 # SDL
 记录Clion学习SDL的代码
+# clion 导入SDL2
+首先下载从github下载MingW版本的SDL库，如果是window开发就将x86文件夹下的文件放入到Mingw64下面，如果放在其他路径，Clion总是找不到导入库的位置

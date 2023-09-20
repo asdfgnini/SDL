@@ -11,7 +11,20 @@ MySDL::MySDL()
 
 MySDL::~MySDL()
 {
+    SDL_FreeSurface(BMP_surface);
+    BMP_surface = nullptr;
+    SDL_FreeSurface(MySurface);
+    MySurface = nullptr;
+
+    SDL_DestroyWindow(MyWindows);
+    MyWindows = nullptr;
+
+
     delete Myevent;
+    SDL_Quit();
+
+
+
 
 }
 

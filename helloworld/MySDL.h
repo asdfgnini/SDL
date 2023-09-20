@@ -25,6 +25,9 @@ public:
     void Set_isStop(bool state);
     bool Get_isStop();
     SDL_Event* Get_Myevent();
+
+
+
 private:
     SDL_Window* MyWindows = nullptr;//视频子系统窗口
     SDL_Surface* MySurface = nullptr;//视频子系统窗口的表面

@@ -89,7 +89,7 @@ bool MySDL::load_bmp() {
 bool MySDL::load_jpg()
 {
     bool re_value = true;
-
+    IMG_Init(_INIT_JPG);
 
 
     return re_value;

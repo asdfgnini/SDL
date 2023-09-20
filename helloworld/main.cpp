@@ -18,8 +18,7 @@ int main(int argc, char *argv[])
                 mySdl->Set_isStop(true);
             }
         }
-
-        mySdl->update_surface();
+       mySdl->update_surface();
 
     };
 

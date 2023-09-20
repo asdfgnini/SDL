@@ -8,7 +8,8 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
-
+#include "iostream"
+using namespace std;
 
 class MySDL {
 
@@ -34,6 +35,10 @@ private:
     SDL_Surface* BMP_surface = nullptr;//加载bmp的表面
     bool isStop = false;//是否结束SDL
     SDL_Event* Myevent;
+
+    int weight;
+    int height;
+
 
 };
 

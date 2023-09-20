@@ -14,7 +14,7 @@ public:
     MySDL();
     ~MySDL();
 public:
-    bool Init();//初始化SDL视频子系统，创建窗口，获取表面
+    bool Init(int posX,int posY,int weight,int height);//初始化SDL视频子系统，创建窗口，获取表面
     bool load_bmp();//加载bmp图像到表面，SDL默认支持bmp
 
 private:

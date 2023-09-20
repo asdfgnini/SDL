@@ -12,7 +12,8 @@ MySDL::~MySDL() {
 
 }
 
-bool MySDL::Init() {
+bool MySDL::Init(int posX,int posY,int weight,int height)
+{
     bool re_value = true;
 
     //初始化SDL 视频子系统
@@ -25,7 +26,7 @@ bool MySDL::Init() {
     else
     {
         SDL_Log("success to SDL_Init");
-        MyWindows = SDL_CreateWindow("first_windows",0,SDL_WINDOWPOS_CENTERED,800,600,SDL_WINDOW_SHOWN);
+        MyWindows = SDL_CreateWindow("first_windows",posX,posY,weight,height,SDL_WINDOW_SHOWN);
         if (MyWindows == nullptr)
         {
             SDL_Log("fail to SDL_CreateWindow %s",SDL_GetError());
@@ -51,19 +52,21 @@ bool MySDL::Init() {
 
 bool MySDL::load_bmp() {
     bool re_value = true;
-
+    //加载bmp图片
     SDL_Surface* pSdlSurface = SDL_LoadBMP("C:\\Users\\Shmiky__\\Desktop\\Clion\\SDL\\helloworld\\bk1.bmp");
     if (pSdlSurface == nullptr)
     {
         SDL_Log("fail to SDL_loadBMP %s",SDL_GetError());
         re_value = false;
-
     }
     else
     {
-
+        SDL_Log("success to SDL_LoadBMP");
+        //将表面复制到窗口所在的表面
+        SDL_BlitSurface(pSdlSurface, nullptr,MySurface, nullptr);
+        //使用表面刷新窗口
+        SDL_UpdateWindowSurface(MyWindows);
     }
-
 
     return false;
 }

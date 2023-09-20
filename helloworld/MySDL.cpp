@@ -4,11 +4,14 @@
 
 #include "MySDL.h"
 
-MySDL::MySDL() {
+MySDL::MySDL()
+{
 
 }
 
-MySDL::~MySDL() {
+MySDL::~MySDL()
+{
+    delete Myevent;
 
 }
 
@@ -46,15 +49,16 @@ bool MySDL::Init(int posX,int posY,int weight,int height)
             }
         }
     }
-
+    //初始化事件循环
+    Myevent = new SDL_Event ;
     return re_value;
 }
 
 bool MySDL::load_bmp() {
     bool re_value = true;
     //加载bmp图片
-    SDL_Surface* pSdlSurface = SDL_LoadBMP("C:\\Users\\Shmiky__\\Desktop\\Clion\\SDL\\helloworld\\bk1.bmp");
-    if (pSdlSurface == nullptr)
+    BMP_surface = SDL_LoadBMP("C:\\Users\\Shmiky__\\Desktop\\Clion\\SDL\\helloworld\\bk1.bmp");
+    if (BMP_surface == nullptr)
     {
         SDL_Log("fail to SDL_loadBMP %s",SDL_GetError());
         re_value = false;
@@ -62,11 +66,43 @@ bool MySDL::load_bmp() {
     else
     {
         SDL_Log("success to SDL_LoadBMP");
-        //将表面复制到窗口所在的表面
-        SDL_BlitSurface(pSdlSurface, nullptr,MySurface, nullptr);
-        //使用表面刷新窗口
-        SDL_UpdateWindowSurface(MyWindows);
+
     }
 
     return false;
+}
+
+bool MySDL::load_jpg()
+{
+    bool re_value = true;
+
+
+
+    return re_value;
+}
+
+bool MySDL::Get_isStop()
+{
+    return isStop;
+}
+
+bool MySDL::update_surface()
+{
+    //将表面复制到窗口所在的表面
+    SDL_BlitSurface(BMP_surface, nullptr,MySurface, nullptr);
+    //使用表面刷新窗口
+    SDL_UpdateWindowSurface(MyWindows);
+
+    return false;
+}
+
+SDL_Event *MySDL::Get_Myevent()
+{
+
+    return Myevent;
+}
+
+void MySDL::Set_isStop(bool state)
+{
+    this->isStop = state;
 }

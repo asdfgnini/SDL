@@ -11,21 +11,46 @@ MySDL::MySDL()
 
 MySDL::~MySDL()
 {
-    SDL_FreeSurface(BMP_surface);
-    BMP_surface = nullptr;
-    SDL_FreeSurface(MySurface);
-    MySurface = nullptr;
+    if (BMP_surface)
+    {
+        SDL_FreeSurface(BMP_surface);
+        BMP_surface = nullptr;
+        SDL_Log("删除 BMP加载表面");
+    }
+    if (MySurface)
+    {
+        SDL_FreeSurface(MySurface);
+        MySurface = nullptr;
+        SDL_Log("删除 表面");
+    }
 
-    SDL_DestroyWindow(MyWindows);
-    MyWindows = nullptr;
-
+    if (MyWindows)
+    {
+        SDL_DestroyWindow(MyWindows);
+        MyWindows = nullptr;
+        SDL_Log("删除 窗口");
+    }
+    if (MyTexture)
+    {
+        SDL_DestroyTexture(MyTexture);
+        SDL_Log("删除 纹理");
+    }
+    if (MyRender)
+    {
+        SDL_DestroyRenderer(MyRender);
+        SDL_Log("删除 渲染器");
+    }
 
     delete Myevent;
+    SDL_Log("删除事件循环");
+    IMG_Quit();
+    SDL_Log("退出 SDL_image 子系统");
     SDL_Quit();
+    SDL_Log("退出 SDL 系统");
 
 }
 
-bool MySDL::Init(int posX,int posY,int weight,int height)
+bool MySDL::Init_Surface(int posX,int posY,int weight,int height)
 {
     bool re_value = true;
 
@@ -89,13 +114,26 @@ bool MySDL::load_bmp() {
 bool MySDL::load_jpg()
 {
     bool re_value = true;
-    IMG_Init( IMG_INIT_JPG);
+
+    if( !( IMG_Init( IMG_INIT_JPG ) & IMG_INIT_JPG ) )
+    {
+        SDL_Log( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+        re_value = false;
+    }
+    else
+    {
+        SDL_Log("success to IMG_Init");
+    }
 
     BMP_surface = IMG_Load("C:\\Users\\Shmiky__\\Desktop\\Clion\\SDL\\helloworld\\bk.jpg");
-    if (BMP_surface == NULL)
+    if (BMP_surface == nullptr)
     {
         SDL_Log("fail to IMG_load %s",IMG_GetError());
         re_value = false;
+    }
+    else
+    {
+        SDL_Log("success to IMG_Load");
     }
     return re_value;
 }
@@ -147,4 +185,88 @@ SDL_Event *MySDL::Get_Myevent()
 void MySDL::Set_isStop(bool state)
 {
     this->isStop = state;
+}
+
+bool MySDL::Init_texture(int posX,int posY,int weight,int height)
+{
+    bool re_value = true;
+    re_value = SDL_Init(SDL_INIT_VIDEO);
+    if (re_value)
+    {
+        SDL_Log("fail to SDL_Init %s", SDL_GetError());
+        re_value = false;
+    }
+    else
+    {
+        SDL_Log("success to SDL_Init");
+        MyWindows = SDL_CreateWindow("first_windows",posX,posY,weight,height,SDL_WINDOW_SHOWN);
+        if (MyWindows == nullptr)
+        {
+            SDL_Log("fail to SDL_CreateWindow %s",SDL_GetError());
+            re_value = false;
+        }
+        else
+        {
+            SDL_Log("success to SDL_CreateWindow");
+            MyRender = SDL_CreateRenderer(MyWindows,-1,SDL_RENDERER_ACCELERATED);
+            if (MyRender == nullptr)
+            {
+                SDL_Log("fail to SDL_CreateRenderer %s",SDL_GetError());
+                re_value = false;
+            }
+            else
+            {
+                SDL_Log("success to SDL_CreateRenderer");
+                SDL_SetRenderDrawColor(MyRender,128,128,128,255);
+                if(!(IMG_Init(IMG_INIT_JPG) & IMG_INIT_JPG))
+                {
+                    SDL_Log("fail to IMG_Init %s",IMG_GetError());
+                    re_value = true;
+                }
+            }
+        }
+    }
+    //初始化事件循环
+    Myevent = new SDL_Event ;
+    return re_value;
+}
+
+bool MySDL::load_texture()
+{
+    bool re_value = true;
+
+    SDL_Surface* load_surface = nullptr;
+    load_surface = IMG_Load("C:\\Users\\Shmiky__\\Desktop\\Clion\\SDL\\helloworld\\bk.jpg");
+    if (load_surface == nullptr)
+    {
+        SDL_Log("fail to IMG_Load %s",IMG_GetError());
+    }
+    else
+    {
+        SDL_Log("success to IMG_Load");
+    }
+
+    MyTexture = SDL_CreateTextureFromSurface(MyRender,load_surface);
+    if (MyTexture == nullptr)
+    {
+        SDL_Log("fail to SDL_CreateTextureFromSurface %s",SDL_GetError());
+    }
+    else
+    {
+        SDL_Log("success to SDL_CreateTextureFromSurface");
+    }
+    SDL_FreeSurface(load_surface);
+
+    return re_value;
+}
+
+bool MySDL::update_Texture()
+{
+    bool re_value = true;
+
+    SDL_RenderClear(MyRender);
+    SDL_RenderCopy(MyRender,MyTexture, nullptr, nullptr);
+    SDL_RenderPresent(MyRender);
+
+    return re_value;
 }

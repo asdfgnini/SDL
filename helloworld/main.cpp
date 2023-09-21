@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     auto* mySdl = new MySDL();
     mySdl->Init(50,SDL_WINDOWPOS_CENTERED,1080,800);
-    mySdl->load_bmp();
+    mySdl->load_jpg();
 
 
     while(!mySdl->Get_isStop())

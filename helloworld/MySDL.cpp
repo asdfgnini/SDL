@@ -89,9 +89,14 @@ bool MySDL::load_bmp() {
 bool MySDL::load_jpg()
 {
     bool re_value = true;
-    IMG_Init(_INIT_JPG);
+    IMG_Init( IMG_INIT_JPG);
 
-
+    BMP_surface = IMG_Load("C:\\Users\\Shmiky__\\Desktop\\Clion\\SDL\\helloworld\\bk.jpg");
+    if (BMP_surface == NULL)
+    {
+        SDL_Log("fail to IMG_load %s",IMG_GetError());
+        re_value = false;
+    }
     return re_value;
 }
 

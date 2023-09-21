@@ -217,7 +217,7 @@ bool MySDL::Init_texture(int posX,int posY,int weight,int height)
             else
             {
                 SDL_Log("success to SDL_CreateRenderer");
-                SDL_SetRenderDrawColor(MyRender,128,128,128,255);
+                SDL_SetRenderDrawColor(MyRender,128,128,128,128);
                 if(!(IMG_Init(IMG_INIT_JPG) & IMG_INIT_JPG))
                 {
                     SDL_Log("fail to IMG_Init %s",IMG_GetError());
@@ -265,7 +265,13 @@ bool MySDL::update_Texture()
     bool re_value = true;
 
     SDL_RenderClear(MyRender);
-    SDL_RenderCopy(MyRender,MyTexture, nullptr, nullptr);
+    //通过矩形来控制图像输出的位置和区域
+    SDL_Rect rect_01;
+    rect_01.x = 0;
+    rect_01.y = 0;
+    rect_01.w = 800;
+    rect_01.h = 480;
+    SDL_RenderCopy(MyRender,MyTexture, nullptr, &rect_01);
     SDL_RenderPresent(MyRender);
 
     return re_value;

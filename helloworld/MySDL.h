@@ -47,6 +47,8 @@ private:
 
     int weight;
     int height;
+    int Texture_weight;
+    int Texture_height;
 
 
 };

@@ -190,6 +190,8 @@ void MySDL::Set_isStop(bool state)
 bool MySDL::Init_texture(int posX,int posY,int weight,int height)
 {
     bool re_value = true;
+    this->weight = weight;
+    this->height = height;
     re_value = SDL_Init(SDL_INIT_VIDEO);
     if (re_value)
     {
@@ -246,6 +248,9 @@ bool MySDL::load_texture()
         SDL_Log("success to IMG_Load");
     }
 
+//    SDL_Log("w: %d h: %d",load_surface->w,load_surface->h);
+    Texture_weight = load_surface->w;
+    Texture_height = load_surface->h;
     MyTexture = SDL_CreateTextureFromSurface(MyRender,load_surface);
     if (MyTexture == nullptr)
     {
@@ -267,10 +272,10 @@ bool MySDL::update_Texture()
     SDL_RenderClear(MyRender);
     //通过矩形来控制图像输出的位置和区域
     SDL_Rect rect_01;
-    rect_01.x = 0;
-    rect_01.y = 0;
-    rect_01.w = 800;
-    rect_01.h = 480;
+    rect_01.x = (weight - Texture_weight) / 2;
+    rect_01.y = (height - Texture_height) / 2;
+    rect_01.w = Texture_weight;
+    rect_01.h = Texture_height;
     SDL_RenderCopy(MyRender,MyTexture, nullptr, &rect_01);
     SDL_RenderPresent(MyRender);
 
